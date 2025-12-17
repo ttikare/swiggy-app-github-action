@@ -149,56 +149,62 @@ Content Of main.tf
 terraform init, terraform plan, terraform apply -auto-approve
 
 
-[C] Create AWS EKS Cluster using eksctl
-1 -- Install kubectl on EC2
+**Create EKS**
+    - install kubectl on ec2
     ```bash
-    sudo apt update
-    sudo apt install curl
-    curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
-    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    kubectl version --client
+    
+        sudo apt update
+        sudo apt install curl
+        curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        kubectl version --client
     ```
 
 2 -- Install AWS CLI
     ```bash
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    sudo apt install unzip
-    unzip awscliv2.zip
-    sudo ./aws/install
-    aws --version
+
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        sudo apt install unzip
+        unzip awscliv2.zip
+        sudo ./aws/install
+        aws --version
     ```
 
 3 -- Installing  eksctl
     ```bash
-    curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-    cd /tmp
-    sudo mv /tmp/eksctl /bin
-    eksctl version
+
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            cd /tmp
+            sudo mv /tmp/eksctl /bin
+            eksctl version
     ```
 
 4 -- Setup Kubernetes using eksctl
     ```bash
-    eksctl create cluster --name my-cluster \
-    --region us-east-1 \
-    --node-type t2.small \
-    --nodes 3 \
+
+            eksctl create cluster --name my-cluster \
+            --region us-east-1 \
+            --node-type t2.small \
+            --nodes 3 \
     ```
 
 
 5 -- Verify Cluster with below command
     ```bash
-    kubectl get nodes
-    kubectl get all
+
+            kubectl get nodes
+            kubectl get all
     ```
 
 [D] Verify CICD Pipeline through gitbash
     ```bash
-    git config --global user.name "Your.Name"
-    git config --global user.email "your.email@gmail.com"
-    git clone https://github.com/wasimhannure/swiggy-clone-b
-    git add .
-    git commit -m "Changed Banner"
-    git push -u origin main  //after giving this command it may ask you to provide your github credentials
+
+            git config --global user.name "Your.Name"
+            git config --global user.email "your.email@gmail.com"
+            git clone https://github.com/wasimhannure/swiggy-clone-b
+            git add .
+            git commit -m "Changed Banner"
+            git push -u origin main  //after giving this command it may ask you to provide your github credentials
     ```
 
 [E] Cleanup
