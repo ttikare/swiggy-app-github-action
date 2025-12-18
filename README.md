@@ -98,11 +98,9 @@ Content Of main.tf
     
     ```bash
     
-    sudo apt-get update
-    sudo apt-get install docker.io -y
-    sudo usermod -aG docker $USER  # Replace with your system's username, e.g., 'ubuntu'
-    newgrp docker
-    sudo chmod 777 /var/run/docker.sock
+    sudo apt update
+    sudo apt install fontconfig openjdk-21-jre
+    java -version
     ```
 **Phase 2: Security**
 
