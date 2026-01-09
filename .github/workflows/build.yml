@@ -37,40 +37,35 @@ jobs:
           push: true
           tags: wasimhannure/swiggy-app:latest
 
-      - name: Aws Configure
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Install aws cli
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install --update
+      - name: Install Azure CLI
+        uses: Azure/cli@v2.2.0
+        with:
+            inlineScript: |
+              az --version
+            
 
-      - name: Install eksctl
+      - name: Create Resource Group
         run: |
-          curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-          sudo mv /tmp/eksctl /usr/local/bin
+          az group create --name swiggy-clone --location eastus
 
-      - name: create eks cluster
+      - name: create aks cluster
         run: |
-          eksctl create cluster --name=swiggy-clone --region=us-east-1 --nodes=1 --node-type=t2.micro --managed
+          az aks create --resource-group swiggy-clone --name swiggy-clone-aks --node-count 1 --generate-ssh-keys
 
-      - name: Get EKS Credentials
+      - name: Get AKS Credentials
         run: |
-            aws eks update-kubeconfig --name swiggy-clone --region us-east-1
+            az aks get-credentials --resource-group swiggy-clone --name swiggy-clone-aks
 
       - name: set up kubectl
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@v4
         with:
           version: 'latest'
 
-      - name: Deploy to EKS
+      - name: Deploy to AKS
         run: |
           kubectl apply -f deployment-and-service.yml
-
-
-    
