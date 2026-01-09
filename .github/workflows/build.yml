@@ -35,7 +35,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: wasimhannure/swiggy-app:latest
+          tags: ykmedia/swiggy-app:latest
 
       - name: Azure Login
         uses: azure/login@v1
